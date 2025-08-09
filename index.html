@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         /*
-          Floating Orbs Background Theme
+          Faded Multicolor Accent Theme
         */
         :root {
             --macos-blue: #007AFF;
@@ -34,7 +34,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Place canvas behind everything */
+            z-index: -1;
         }
 
         .card {
@@ -123,7 +123,6 @@
             }
         }
         
-        /* Updated reveal animations */
         .reveal-up {
             opacity: 0;
             transform: translateY(30px);
@@ -161,10 +160,9 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Animation for name slide-in */
         .name-slide-in {
             animation: slideInFromLeft 1s ease-out 0.5s forwards;
-            opacity: 0; /* Start hidden */
+            opacity: 0;
         }
 
         @keyframes slideInFromLeft {
@@ -177,6 +175,58 @@
                 opacity: 1;
             }
         }
+        
+        /* Hamburger Menu Icon */
+        .hamburger-icon {
+            width: 28px;
+            height: 22px;
+            position: relative;
+            transform: rotate(0deg);
+            transition: .5s ease-in-out;
+            cursor: pointer;
+        }
+
+        .hamburger-icon span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: var(--text-primary);
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .hamburger-icon span:nth-child(1) { top: 0px; }
+        .hamburger-icon span:nth-child(2) { top: 9px; }
+        .hamburger-icon span:nth-child(3) { top: 18px; }
+
+        .hamburger-icon.open span:nth-child(1) {
+            top: 9px;
+            transform: rotate(135deg);
+        }
+        .hamburger-icon.open span:nth-child(2) {
+            opacity: 0;
+            left: -60px;
+        }
+        .hamburger-icon.open span:nth-child(3) {
+            top: 9px;
+            transform: rotate(-135deg);
+        }
+        
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+
+        #mobile-menu.open {
+            max-height: 500px; /* A value larger than the menu's height */
+        }
+
     </style>
 </head>
 <body>
@@ -195,11 +245,15 @@
                 <a href="#ai-coach" class="nav-link text-gray-600 hover:text-[var(--macos-blue)] transition-colors duration-300">AI Coach</a>
                 <a href="#contact" class="nav-link text-gray-600 hover:text-[var(--macos-blue)] transition-colors duration-300">Contact</a>
             </nav>
-            <button id="mobile-menu-btn" class="md:hidden text-[var(--text-primary)] focus:outline-none">
-                <i class="fas fa-bars text-2xl"></i>
+            <button id="mobile-menu-btn" class="md:hidden text-[var(--text-primary)] focus:outline-none z-50">
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </button>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-white/90 backdrop-blur-md">
+        <div id="mobile-menu" class="md:hidden bg-white/90 backdrop-blur-md">
              <a href="#about" class="nav-link block py-3 px-6 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">About</a>
             <a href="#skills" class="nav-link block py-3 px-6 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">Skills</a>
             <a href="#projects" class="nav-link block py-3 px-6 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">Projects</a>
@@ -234,10 +288,10 @@
                 <h2 class="section-title text-3xl sm:text-4xl font-bold text-center mb-12 reveal-up">About Me</h2>
                 <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
                     <div class="md:w-1/3 flex-shrink-0 reveal-left">
-                        <img src="https://i.postimg.cc/0NWsLfQg/Caro-1730386025837-0.png" alt="Om N. Bhogan" class="rounded-full shadow-lg w-48 h-48 sm:w-64 sm:h-64 md:w-full md:h-auto mx-auto object-cover border-4 border-[var(--macos-blue)]/50">
+                        <img src="https://placehold.co/400x400/e2e8f0/4a5568?text=Om+B." alt="Om N. Bhogan" class="rounded-full shadow-lg w-48 h-48 sm:w-64 sm:h-64 md:w-full md:h-auto mx-auto object-cover border-4 border-[var(--macos-blue)]/50">
                     </div>
                     <div class="md:w-2/3 text-center md:text-left text-base sm:text-lg text-[var(--text-secondary)] space-y-4 reveal-up">
-                        <p>Hello! I'm Om,An aspiring Computer Science&Eng. student passionate about building intelligent systems that learn, adapt, and solve real-world problems. My background in collaborative leadership and clear communication fuels my approach to developing impactful, data-driven solutions. </p>
+                        <p>Hello! I'm Om,An aspiring Computer Science&Eng. student passionate about building intelligent systems that learn, adapt, and solve real-world problems. My background in collaborative leadership and clear communication fuels my approach to developing impactful, data-driven solutions.</p>
                         <p>I thrive on complex challenges and am constantly seeking to deploy my skills on innovative projects.</p>
                     </div>
                 </div>
@@ -408,7 +462,7 @@
                              <div class="flex space-x-6 text-3xl">
                                  <a href="https://github.com/0ommmmmmm" target="_blank" class="text-gray-500 hover:text-black transition-colors duration-300"><i class="fab fa-github"></i></a>
                                  <a href="https://instagram.com/0ommmmmmm" target="_blank" class="text-gray-500 hover:text-pink-500 transition-colors duration-300"><i class="fab fa-instagram"></i></a>
-                                 <a href="https://www.linkedin.com/in/om-bhogan-01a02234a/" target="_blank" class="text-gray-500 hover:text-[var(--macos-blue)] transition-colors duration-300"><i class="fab fa-linkedin"></i></a>
+                                 <a href="#" target="_blank" class="text-gray-500 hover:text-[var(--macos-blue)] transition-colors duration-300"><i class="fab fa-linkedin"></i></a>
                              </div>
                         </div>
                     </div>
@@ -519,16 +573,21 @@
             // --- Mobile Menu Toggle ---
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
+            const hamburgerIcon = mobileMenuBtn.querySelector('.hamburger-icon');
+
             mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+                hamburgerIcon.classList.toggle('open');
+                mobileMenu.classList.toggle('open');
             });
+
 
             // --- Smooth Scrolling & Close Mobile Menu on Click ---
             document.querySelectorAll('a.nav-link').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    if (!mobileMenu.classList.contains('hidden')) {
-                         mobileMenu.classList.add('hidden');
+                    if (mobileMenu.classList.contains('open')) {
+                         hamburgerIcon.classList.remove('open');
+                         mobileMenu.classList.remove('open');
                     }
                     const targetElement = document.querySelector(this.getAttribute('href'));
                     if(targetElement) {
