@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>School Bells & Smiles</title>
+  <meta name="description" content="2k22 to 2k24" />
+  <style>
+    :root{--bg:#f7f8fb;--card:#fff;--muted:#6b7280;--accent:#0b5cff}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;line-height:1.4;margin:0;background:var(--bg);color:#111}
+    header{background:linear-gradient(90deg,#ffffff77, #eef2ff);padding:28px 20px;border-bottom:1px solid #e6e9f2}
+    .wrap{max-width:1100px;margin:0 auto}
+    h1{font-size:1.6rem;margin:0 0 6px}
+    p.lead{margin:0;color:var(--muted)}
+
+    /* Gallery grid */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;padding:20px}
+    .card{background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(12,20,44,0.06);cursor:pointer;display:block;text-decoration:none;color:inherit}
+    .card img{width:100%;height:160px;object-fit:cover;display:block}
+    .caption{padding:10px 12px;font-size:0.9rem}
+    .meta{font-size:0.8rem;color:var(--muted);margin-top:6px}
+
+    /* Lightbox */
+    .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,6,23,0.66);z-index:120}
+    .lightbox.open{display:flex}
+    .lightbox .frame{max-width:92vw;max-height:92vh;border-radius:10px;overflow:hidden;background:#000;position:relative}
+    .lightbox img{display:block;max-width:100%;max-height:80vh;width:auto;height:auto}
+    .lb-caption{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,0.55));color:#fff}
+    .lb-close{position:absolute;top:8px;right:8px;background:#ffffff11;border:0;color:#fff;border-radius:6px;padding:6px 8px;backdrop-filter:blur(4px);cursor:pointer}
+
+    /* responsive tweaks */
+    @media (min-width:900px){.card img{height:180px}}
+    @media (min-width:1200px){.card img{height:200px}}
+
+    /* small footer */
+    footer{padding:18px 20px;color:var(--muted);text-align:center;font-size:0.9rem}
+    .actions{margin-top:10px}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;font-size:0.9rem}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>School Bells & Smiles</h1>
+      <p class="lead">2k22 to 2k24</p>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-bottom:20px">
+    <!-- NOTE: replace image srcs with actual paths (e.g., /assets/images/boarding1.jpg) -->
+    <section class="gallery" id="gallery">
+      <a class="card" data-full="/assets/images/boarding1-large.jpg" data-caption="">
+        <img loading="lazy" src="https://i.postimg.cc/qMYxQ2SC/IMG-20220701-WA0003.jpg" alt="Main quad — morning assembly">
+        <div class="caption">São João <div class="meta">❤️</div></div>
+      </a>
+
+      <a class="card" data-full="/assets/images/boarding2-large.jpg" data-caption="Dorm corridor — student life">
+        <img loading="lazy" src="https://i.postimg.cc/N088gSM1/IMG-20231202-134620.jpg" alt="Dorm corridor">
+        <div class="caption">💁 <div class="meta"></div></div>
+      </a>
+
+      <a class="card" data-full="/assets/images/boarding3-large.jpg" data-caption="Dining hall — family style meals">
+        <img loading="lazy" src="https://i.postimg.cc/LXHthDYG/Screenshot-2023-05-29-21-48-37-986-com-google-android-apps-photos-edit.jpg" alt="Dining hall">
+        <div class="caption"> <div class="meta"></div></div>
+      </a>
+
+      <a class="card" data-full="/assets/images/boarding4-large.jpg" data-caption="Sports grounds — evening practice">
+        <img loading="lazy" src="https://i.postimg.cc/MGJbJqW6/Screenshot-2023-05-29-21-51-42-698-com-google-android-apps-photos-edit.jpg
+" alt="Sports grounds">
+        <div class="caption"><div class="meta"></div></div>
+      </a>
+
+      <a class="card" data-full="/assets/images/boarding5-large.jpg" data-caption="Library — quiet study spaces">
+        <img loading="lazy" src="https://i.postimg.cc/prrKJdBZ/Screenshot-20240804-130933-Photos.jpg
+" alt="Library">
+        <div class="caption">Batch <div class="meta">2K23 To 2k24</div></div>
+      </a>
+
+      <a class="card" data-full="/assets/images/boarding6-large.jpg" data-caption="Cultural night — performances">
+        <img loading="lazy" src="https://i.postimg.cc/k4fxSSWG/Screenshot-20240804-130953-Photos.jpg" alt="Cultural night">
+        <div class="caption">Weeeeeee <div class="meta">😉</div></div>
+      </a>
+
+      <!-- add more cards as needed -->
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-hidden="true">
+      <div class="frame" role="document">
+        <button id="lbClose" class="lb-close" aria-label="Close">✕</button>
+        <img id="lbImg" src="" alt="">
+        <div id="lbCaption" class="lb-caption"></div>
+      </div>
+    </div>
+
+    <div style="padding:0 8px;margin-top:8px;text-align:center;color:var(--muted)">
+      <div class="actions">
+        <a class="btn" href="/">Back to Home</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Boarding School — All rights reserved
+  </footer>
+
+  <script>
+    // small gallery lightbox script
+    const gallery = document.getElementById('gallery');
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCaption = document.getElementById('lbCaption');
+    const lbClose = document.getElementById('lbClose');
+
+    gallery.addEventListener('click', e => {
+      const card = e.target.closest('.card');
+      if(!card) return;
+      const full = card.dataset.full || card.querySelector('img').src;
+      const caption = card.dataset.caption || card.querySelector('img').alt || '';
+      openLightbox(full, caption);
+    });
+
+    function openLightbox(src, caption){
+      lbImg.src = src;
+      lbImg.alt = caption;
+      lbCaption.textContent = caption;
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(){
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden','true');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e)=>{ if(e.target===lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
+
+    // set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
