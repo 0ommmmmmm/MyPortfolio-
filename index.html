@@ -11,12 +11,11 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        /*
-          Faded Multicolor Accent Theme
+                 Faded Multicolor Accent Theme
         */
         :root {
             --macos-blue: #007AFF;
-            --card-background: rgba(255, 255, 255, 0.75);
+            --card-background: rgba(255, 255, 255, 0.65); /* Made cards more transparent */
             --text-primary: #1d1d1f;
             --text-secondary: #6e6e73;
             --border-color: rgba(0, 0, 0, 0.08);
@@ -140,6 +139,19 @@
             transform: translate(0, 0);
         }
 
+        /* Certificate hover animation */
+        .certificate-item .card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+
+        .certificate-item:hover .card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
         #ai-coach-result {
             min-height: 150px;
             white-space: pre-wrap;
@@ -177,7 +189,6 @@
             }
         }
         
-        /* Hamburger Menu Icon */
         .hamburger-icon {
             width: 28px;
             height: 22px;
@@ -217,7 +228,6 @@
             transform: rotate(-135deg);
         }
         
-        /* Mobile Menu Animation */
         #mobile-menu {
             max-height: 0;
             overflow: hidden;
@@ -225,8 +235,37 @@
         }
 
         #mobile-menu.open {
-            max-height: 500px; /* A value larger than the menu's height */
+            max-height: 500px;
         }
+        
+        /* Navigation Link Pop-up Animation */
+        .nav-link {
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.3); /* Made glass more transparent */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--macos-blue) !important; /* Accent color text */
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4); /* Made border more transparent */
+        }
+        
+        /* Mobile menu link adjustment */
+        #mobile-menu .nav-link:hover {
+            transform: translateX(5px);
+            background-color: rgba(0,0,0,0.05);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            color: var(--macos-blue) !important;
+            box-shadow: none;
+            border: none;
+        }
+
 
     </style>
 </head>
@@ -237,15 +276,23 @@
     <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
         <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-xl sm:text-2xl font-bold text-[var(--text-primary)] name-slide-in">Om N. Bhogan</a>
-            <nav class="hidden md:flex space-x-8">
-                <a href="#about" class="nav-link text-gray-600 hover:text-[var(--macos-blue)] transition-colors duration-300">About</a>
-                <a href="#skills" class="nav-link text-gray-600 hover:text-[var(--macos-blue)] transition-colors duration-300">Skills</a>
-                <a href="#projects" class="nav-link text-gray-600 hover:text-[var(--macos-blue)] transition-colors duration-300">Projects</a>
-                <a href="#certificates" class="nav-link text-gray-600 hover:text-[var(--macos-blue)] transition-colors duration-300">Certificates</a>
-                <a href="#memories" class="nav-link text-gray-600 hover:text-[var(--macos-blue)] transition-colors duration-300">Memories</a>
-                <a href="#ai-coach" class="nav-link text-gray-600 hover:text-[var(--macos-blue)] transition-colors duration-300">AI Coach</a>
-                <a href="#contact" class="nav-link text-gray-600 hover:text-[var(--macos-blue)] transition-colors duration-300">Contact</a>
+            <nav class="hidden md:flex space-x-2">
+                <a href="#about" class="nav-link text-gray-600">About</a>
+                <a href="#skills" class="nav-link text-gray-600">Skills</a>
+                <a href="#projects" class="nav-link text-gray-600">Projects</a>
+                <a href="#certificates" class="nav-link text-gray-600">Certificates</a>
+                <a href="#memories" class="nav-link text-gray-600">Memories</a>
+                <a href="#ai-coach" class="nav-link text-gray-600">AI Coach</a>
+                <a href="#contact" class="nav-link text-gray-600">Contact</a>
             </nav>
+            <button id="mobile-menu-btn" class="md:hidden text-[var(--text-primary)] focus:outline-none z-50">
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+        </div>
             <button id="mobile-menu-btn" class="md:hidden text-[var(--text-primary)] focus:outline-none z-50">
                 <div class="hamburger-icon">
                     <span></span>
