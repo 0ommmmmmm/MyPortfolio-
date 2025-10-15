@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-Dnyasa Geology Mentorship</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Light beige */
+        }
+        .earth-brown { color: #5D4037; }
+        .earth-green { color: #4CAF50; }
+        .bg-earth-beige { background-color: #F5F5DC; }
+        .bg-earth-gray { background-color: #E0E0E0; }
+        .bg-earth-brown { background-color: #5D4037; }
+        .bg-earth-green { background-color: #4CAF50; }
+        .border-earth-brown { border-color: #5D4037; }
+
+        /* Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero-bg {
+             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23d4c4b3' fill-opacity='0.1'%3E%3Crect x='0' y='0' width='100' height='1'/%3E%3Crect x='0' y='2' width='100' height='1'/%3E%3Crect x='0' y='5' width='100' height='1'/%3E%3Crect x='0' y='9' width='100' height='1'/%3E%3Crect x='0' y='14' width='100' height='1'/%3E%3Crect x='0' y='20' width='100' height='1'/%3E%3Crect x='0' y='27' width='100' height='1'/%3E%3Crect x='0' y='35' width='100' height='1'/%3E%3Crect x='0' y='44' width='100' height='1'/%3E%3Crect x='0' y='54' width='100' height='1'/%3E%3Crect x='0' y='65' width='100' height='1'/%3E%3Crect x='0' y='77' width='100' height='1'/%3E%3Crect x='0' y='90' width='100' height='1'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(76, 175, 80, 0.5)); }
+            50% { filter: drop-shadow(0 0 15px rgba(76, 175, 80, 1)); }
+        }
+
+        .crystal-spinner {
+            animation: spin 10s linear infinite, glow 2.5s ease-in-out infinite;
+        }
+
+        /* Chatbot styles */
+        #chat-widget.hidden, #chat-window.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+        
+        /* Modal styles */
+        #study-plan-modal.hidden {
+            display: none;
+        }
+        
+        .modal-content {
+             white-space: pre-wrap;
+             font-family: monospace;
+        }
+
+        /* Form Submission Animation */
+        @keyframes button-glow {
+            50% {
+                box-shadow: 0 0 20px #FFD700, 0 0 30px #E0C200;
+            }
+        }
+        #submitButton.is-animating {
+            animation: button-glow 1.5s ease-in-out;
+        }
+        .sparkle {
+            position: absolute;
+            bottom: 20%;
+            background: #FFD700;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: sparkle-up 1.5s ease-out;
+        }
+        @keyframes sparkle-up {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-150px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Registration Closed Animation */
+        @keyframes pulsing-glow {
+            0%, 100% {
+                color: #c62828; /* Darker Red */
+                text-shadow: 0 0 8px rgba(239, 83, 80, 0.4);
+            }
+            50% {
+                color: #ef5350; /* Lighter Red */
+                text-shadow: 0 0 16px rgba(239, 83, 80, 0.8);
+            }
+        }
+        .registration-closed-effect {
+            animation: pulsing-glow 2.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Page Loader -->
+    <div id="page-loader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-stone-50/80 backdrop-blur-lg transition-opacity duration-700">
+        <svg class="crystal-spinner w-20 h-20 text-green-700" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5.12 6.12 6 6 3.83-3.83a2 2 0 0 0 0-2.83L12.12.64a2 2 0 0 0-2.83 0L5.12 4.81a2 2 0 0 0 0 2.83Z"/><path d="m12 12 6 6 4.12-4.12a2 2 0 0 0 0-2.83l-2.83-2.83a2 2 0 0 0-2.83 0L12 12Z"/><path d="m12.87 12.87-1.74 1.74a2 2 0 0 1-2.83 0L.64 6.96a2 2 0 0 1 0-2.83L3.46 1.3a2 2 0 0 1 2.83 0l6.58 6.58"/></svg>
+        <p class="mt-4 text-lg earth-brown">Preparing your geology experience…</p>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 opacity-0 transition-opacity duration-1000">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold earth-brown flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-green-700"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9.09 9 1.82 3.64L13.5 11l-2.59 2.59L12 16l-1.9-2.82L7.5 14l2.5-2.5Z"/></svg>
+                G-Dnyasa
+            </a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#home" class="hover:text-green-700 transition-transform transform hover:scale-105">Home</a>
+                <a href="#programs" class="hover:text-green-700 transition-transform transform hover:scale-105">Programs</a>
+                <a href="#about" class="hover:text-green-700 transition-transform transform hover:scale-105">About</a>
+                <a href="#contact" class="hover:text-green-700 transition-transform transform hover:scale-105">Contact</a>
+                <a href="#register" class="bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 transition-transform transform hover:scale-105 shadow-lg">Join Now</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden">
+                <i data-lucide="menu"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2">
+            <a href="#home" class="block hover:text-green-700 transition-transform transform hover:scale-105 origin-left">Home</a>
+            <a href="#programs" class="block hover:text-green-700 transition-transform transform hover:scale-105 origin-left">Programs</a>
+            <a href="#about" class="block hover:text-green-700 transition-transform transform hover:scale-105 origin-left">About</a>
+            <a href="#contact" class="block hover:text-green-700 transition-transform transform hover:scale-105 origin-left">Contact</a>
+            <a href="#register" class="block bg-green-700 text-white text-center mt-2 px-4 py-2 rounded-full hover:bg-green-800 transition-transform transform hover:scale-105 shadow-lg">Join Now</a>
+        </div>
+    </header>
+
+    <main class="opacity-0 transition-opacity duration-1000">
+        <!-- Hero Section -->
+        <section id="home" class="py-20 md:py-32 hero-bg">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold earth-brown reveal">Get Set Ready to Rock the World!</h1>
+                <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-600 reveal" style="transition-delay: 0.2s;">
+                    G-Dnyasa offers specialized mentorship for geology students preparing for competitive exams like CSIR-NET, GATE, IIT JAM, and other university tests. We provide the guidance and resources you need to excel.
+                </p>
+                <a href="#register" class="mt-10 inline-block bg-green-700 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-green-800 transition transform hover:scale-105 shadow-xl reveal" style="transition-delay: 0.4s;">
+                    Join the New Batch
+                </a>
+                <div id="countdown" class="mt-12 max-w-lg mx-auto bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border reveal" style="transition-delay: 0.6s;">
+                    <h3 class="text-xl font-semibold earth-brown mb-4">Registration Closes Soon!</h3>
+                    <div class="grid grid-cols-4 gap-4 text-center">
+                        <div>
+                            <span id="days" class="text-4xl font-bold earth-brown">00</span>
+                            <span class="block text-sm text-gray-500">Days</span>
+                        </div>
+                        <div>
+                            <span id="hours" class="text-4xl font-bold earth-brown">00</span>
+                            <span class="block text-sm text-gray-500">Hours</span>
+                        </div>
+                        <div>
+                            <span id="minutes" class="text-4xl font-bold earth-brown">00</span>
+                            <span class="block text-sm text-gray-500">Minutes</span>
+                        </div>
+                        <div>
+                            <span id="seconds" class="text-4xl font-bold earth-brown">00</span>
+                            <span class="block text-sm text-gray-500">Seconds</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Programs / Plans Section -->
+        <section id="programs" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold earth-brown reveal">Our Mentorship Programs</h2>
+                    <p class="mt-4 text-gray-600 max-w-xl mx-auto reveal">Choose a plan that fits your preparation needs and goals.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Quartz Plan -->
+                    <div class="border rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow bg-stone-50 reveal">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold earth-brown">Quartz (Basic)</h3>
+                            <p class="text-4xl font-bold mt-4">₹800</p>
+                            <p class="text-sm text-gray-500">per 2 months</p>
+                        </div>
+                        <ul class="mt-8 space-y-4 text-gray-700">
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="text-green-600 mr-3"></i>4 Live Interactive Sessions</li>
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="text-green-600 mr-3"></i>4 Mock Tests</li>
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="text-green-600 mr-3"></i>Comprehensive Study Materials</li>
+                        </ul>
+                        <p class="text-sm text-gray-500 mt-6 text-center">Next 2-month continuation: ₹500</p>
+                    </div>
+                    <!-- Garnet Plan -->
+                    <div class="border rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow bg-white ring-2 ring-green-700 transform scale-105 reveal" style="transition-delay: 0.2s;">
+                         <div class="text-center relative">
+                             <span class="absolute -top-12 left-1/2 -translate-x-1/2 bg-green-700 text-white px-4 py-1 text-sm rounded-full font-semibold">Most Popular</span>
+                            <h3 class="text-2xl font-bold text-green-800">Garnet (Silver)</h3>
+                            <p class="text-4xl font-bold mt-4">₹1200</p>
+                            <p class="text-sm text-gray-500">per 2 months</p>
+                        </div>
+                        <ul class="mt-8 space-y-4 text-gray-700">
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="text-green-600 mr-3"></i>8 Live Interactive Sessions</li>
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="text-green-600 mr-3"></i>4 Mock Tests</li>
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="text-green-600 mr-3"></i>Comprehensive Study Materials</li>
+                        </ul>
+                        <p class="text-sm text-gray-500 mt-6 text-center">Next 2-month continuation: ₹1000</p>
+                    </div>
+                    <!-- Diamond Plan -->
+                    <div class="border rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow bg-stone-50 reveal" style="transition-delay: 0.4s;">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold earth-brown">Diamond (Gold)</h3>
+                            <p class="text-4xl font-bold mt-4">₹1600</p>
+                            <p class="text-sm text-gray-500">per 2 months</p>
+                        </div>
+                        <ul class="mt-8 space-y-4 text-gray-700">
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="text-green-600 mr-3"></i>8 Live Interactive Sessions</li>
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="text-green-600 mr-3"></i>Resume Review Session</li>
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="text-green-600 mr-3"></i>One Mega Exam Test Series</li>
+                        </ul>
+                        <p class="text-sm text-gray-500 mt-6 text-center">Next 2-month continuation: ₹1500</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About the Mentor -->
+        <section id="about" class="py-20">
+            <div class="container mx-auto px-6">
+                 <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/3 text-center reveal">
+                        <img src="https://placehold.co/300x300/8A6B52/FFFFFF?text=Apoorva+P." alt="Ms. Apoorva Pimprikar" class="rounded-full w-64 h-64 mx-auto object-cover shadow-2xl border-4 border-white">
+                        <h3 class="text-2xl font-bold mt-6 earth-brown">Ms. Apoorva Pimprikar</h3>
+                        <p class="text-gray-600 mt-1">MSc Applied Geology</p>
+                        <p class="text-sm text-green-700 font-semibold mt-2">GATE GG 2024 & 2025 Qualified</p>
+                    </div>
+                    <div class="md:w-2/3 reveal" style="transition-delay: 0.2s;">
+                        <h2 class="text-3xl font-bold earth-brown mb-4">About the Mentor</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            With a passion for geology and a track record of success in competitive exams, I founded G-Dnyasa to guide students through their preparation journey. My teaching philosophy is centered on building strong conceptual foundations, practicing consistently, and developing effective exam strategies. I'm here to help you navigate the complexities of these exams and achieve your academic goals.
+                        </p>
+                        <div class="bg-green-50 border-l-4 border-green-600 p-6 rounded-r-lg mt-6">
+                            <p class="text-lg italic text-green-800">
+                                “My goal is to make complex geological concepts accessible and enjoyable. I believe every student has the potential to succeed with the right guidance and a little bit of hard work. Let's embark on this journey together!”
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Batch Schedule -->
+        <section id="schedule" class="py-20 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <div class="reveal">
+                    <h2 class="text-3xl md:text-4xl font-bold earth-brown">Next Batch Starts 8th October 2025</h2>
+                    <p class="mt-4 text-lg text-gray-600">Join us for live online sessions and kickstart your preparation.</p>
+                    <div class="mt-8 inline-flex items-center bg-stone-100 p-6 rounded-2xl shadow-md border">
+                        <i data-lucide="calendar-days" class="w-12 h-12 text-green-700 mr-6"></i>
+                        <div>
+                            <p class="text-xl font-semibold text-left">Wednesday & Thursday</p>
+                            <p class="text-lg text-gray-600 text-left">7:00 PM – 9:00 PM (Online)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold earth-brown reveal">What Our Students Say</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border reveal">
+                        <p class="text-gray-600">"The mentorship helped me clear my doubts and prepare better for GATE! The mock tests were especially useful."</p>
+                        <p class="mt-4 font-bold earth-brown">- Priya S.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border reveal" style="transition-delay: 0.2s;">
+                        <p class="text-gray-600">"Apoorva ma'am's teaching style is excellent. She breaks down difficult topics into simple, understandable parts."</p>
+                        <p class="mt-4 font-bold earth-brown">- Rohan K.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border reveal" style="transition-delay: 0.4s;">
+                        <p class="text-gray-600">"The study materials are very comprehensive. I finally feel confident about my preparation for the CSIR-NET exam."</p>
+                        <p class="mt-4 font-bold earth-brown">- Anjali M.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Free Resources Section -->
+        <section id="resources" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold earth-brown reveal">Free Resources & Tips</h2>
+                    <p class="mt-4 text-gray-600 max-w-xl mx-auto reveal">Get started with some of our free guides and video content.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-stone-50 p-8 rounded-2xl shadow-md border hover:shadow-lg transition-shadow reveal">
+                        <h3 class="font-bold text-xl earth-brown">Top 5 Mistakes in GATE Geology</h3>
+                        <p class="text-gray-600 mt-2">Learn what common pitfalls to avoid during your exam prep.</p>
+                        <a href="#" class="inline-block mt-4 text-green-700 font-semibold hover:underline">Read More &rarr;</a>
+                    </div>
+                    <div class="bg-stone-50 p-8 rounded-2xl shadow-md border hover:shadow-lg transition-shadow reveal" style="transition-delay: 0.2s;">
+                        <h3 class="font-bold text-xl earth-brown">Smart Revision Tips for JAM</h3>
+                        <p class="text-gray-600 mt-2">Effective strategies to revise the vast syllabus efficiently.</p>
+                        <a href="#" class="inline-block mt-4 text-green-700 font-semibold hover:underline">Watch Video &rarr;</a>
+                    </div>
+                     <div class="bg-stone-50 p-8 rounded-2xl shadow-md border hover:shadow-lg transition-shadow reveal" style="transition-delay: 0.4s;">
+                        <h3 class="font-bold text-xl earth-brown">CSIR-NET Important Topics</h3>
+                        <p class="text-gray-600 mt-2">A curated list of high-yield topics to focus on for the exam.</p>
+                        <a href="#" class="inline-block mt-4 text-green-700 font-semibold hover:underline">Download PDF &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registration Form -->
+        <section id="register" class="py-20">
+            <div class="container mx-auto px-6">
+                 <div class="max-w-2xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-2xl border">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl md:text-4xl font-bold earth-brown reveal">Register for a Trial Pack</h2>
+                        <p class="mt-4 text-gray-600 reveal">Fill out the form below to join the next batch or get a trial pack. We'll get in touch with you shortly!</p>
+                    </div>
+                    <form id="registrationForm" class="reveal">
+                        <div class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                                <input type="text" id="name" name="Name" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                            </div>
+                             <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                                <input type="email" id="email" name="Email" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                            </div>
+                             <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                                <input type="tel" id="phone" name="Phone" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                            </div>
+                            <div>
+                                <label for="college" class="block text-sm font-medium text-gray-700">College / University</label>
+                                <input type="text" id="college" name="College" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                            </div>
+                            <div>
+                                <label for="plan" class="block text-sm font-medium text-gray-700">Preferred Plan</label>
+                                <select id="plan" name="Plan" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 bg-white">
+                                    <option>Quartz (Basic)</option>
+                                    <option>Garnet (Silver)</option>
+                                    <option>Diamond (Gold)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <button type="button" id="generate-plan-btn" class="w-full bg-amber-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-amber-700 transition shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed">
+                                ✨ Generate a Personalized Study Plan
+                            </button>
+                        </div>
+                        <div class="mt-8 relative">
+                           <button type="submit" id="submitButton" class="w-full bg-green-700 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-green-800 transition transform hover:scale-105 active:scale-95 shadow-xl overflow-hidden">
+                                <span class="relative z-10">Submit & Join Now</span>
+                            </button>
+                        </div>
+                    </form>
+                    <div id="formMessage" class="mt-6 text-center"></div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold earth-brown reveal">Get in Touch</h2>
+                <p class="mt-4 text-gray-600 max-w-xl mx-auto reveal">Have questions? Feel free to reach out to us!</p>
+                <div class="mt-8 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12 reveal">
+                    <a href="mailto:geology.apoorva95@gmail.com" class="flex items-center text-lg text-gray-700 hover:text-green-700 transition">
+                        <i data-lucide="mail" class="w-6 h-6 mr-3"></i>
+                        geology.apoorva95@gmail.com
+                    </a>
+                </div>
+                <div class="mt-8 flex justify-center space-x-6 reveal">
+                    <a href="#" class="text-gray-500 hover:text-green-700"><i data-lucide="instagram" class="w-8 h-8"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-green-700"><i data-lucide="linkedin" class="w-8 h-8"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-green-700"><i data-lucide="youtube" class="w-8 h-8"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-earth-brown text-white opacity-0 transition-opacity duration-1000">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                <div class="mb-4 md:mb-0">
+                    <p>&copy; 2025 G-Dnyasa Geology Mentorship</p>
+                    <p class="text-sm text-gray-300">Designed for Geology Learners.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#home" class="hover:text-green-300 transition-transform transform hover:scale-105">Home</a>
+                    <a href="#about" class="hover:text-green-300 transition-transform transform hover:scale-105">About</a>
+                    <a href="#programs" class="hover:text-green-300 transition-transform transform hover:scale-105">Programs</a>
+                    <a href="#contact" class="hover:text-green-300 transition-transform transform hover:scale-105">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Widget -->
+    <div id="chat-container">
+        <!-- Chat Bubble Icon -->
+        <button id="chat-widget" class="fixed bottom-6 right-6 bg-green-700 text-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transform transition-transform hover:scale-110 z-[9990]">
+             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5.12 6.12 6 6 3.83-3.83a2 2 0 0 0 0-2.83L12.12.64a2 2 0 0 0-2.83 0L5.12 4.81a2 2 0 0 0 0 2.83Z"/><path d="m12 12 6 6 4.12-4.12a2 2 0 0 0 0-2.83l-2.83-2.83a2 2 0 0 0-2.83 0L12 12Z"/><path d="m12.87 12.87-1.74 1.74a2 2 0 0 1-2.83 0L.64 6.96a2 2 0 0 1 0-2.83L3.46 1.3a2 2 0 0 1 2.83 0l6.58 6.58"/></svg>
+        </button>
+
+        <!-- Chat Window -->
+        <div id="chat-window" class="hidden fixed bottom-24 right-6 w-[calc(100%-3rem)] max-w-sm h-[70vh] max-h-[500px] bg-white/70 backdrop-blur-xl rounded-2xl shadow-2xl flex flex-col transition-all duration-300 z-[9991]">
+            <!-- Header -->
+            <div class="p-4 bg-earth-brown/90 text-white rounded-t-2xl flex justify-between items-center">
+                <div>
+                    <h3 class="font-bold text-lg">DnyaBot</h3>
+                    <p class="text-xs text-green-200">Your Geology Guide</p>
+                </div>
+                <button id="close-chat-btn" class="text-white hover:text-gray-300 text-2xl leading-none">&times;</button>
+            </div>
+
+            <!-- Messages -->
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4">
+                <!-- Messages will be appended here -->
+            </div>
+
+            <!-- Quick Replies & Input -->
+            <div class="p-4 border-t border-gray-200">
+                 <div id="quick-replies" class="flex flex-wrap gap-2 mb-3">
+                    <button class="quick-reply-btn">📘 Programs</button>
+                    <button class="quick-reply-btn">🧑‍🏫 Mentor Info</button>
+                    <button class="quick-reply-btn">🕒 Batch Schedule</button>
+                    <button class="quick-reply-btn">📝 Register Now</button>
+                </div>
+                <form id="chat-form" class="flex items-center gap-2">
+                    <input type="text" id="chat-input" placeholder="Ask a question..." class="w-full px-4 py-2 border border-gray-300 rounded-full focus:ring-green-500 focus:border-green-500">
+                    <button type="submit" class="bg-green-700 text-white p-2 rounded-full hover:bg-green-800 transition">
+                        <i data-lucide="send-horizontal" class="w-5 h-5"></i>
+                    </button>
+                    <button type="button" id="gemini-chat-btn" title="Ask a Deeper Geology Question" class="bg-amber-600 text-white p-2 rounded-full hover:bg-amber-700 transition">
+                        ✨
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Study Plan Modal -->
+    <div id="study-plan-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[10000] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div class="p-4 flex justify-between items-center border-b">
+                <h3 class="text-xl font-bold earth-brown">✨ Your Personalized Study Plan</h3>
+                <button id="close-modal-btn" class="text-gray-500 hover:text-gray-800 text-2xl leading-none">&times;</button>
+            </div>
+            <div id="modal-content" class="p-6 overflow-y-auto">
+                <p>Generating your plan...</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- GEMINI API SETUP ---
+        const API_KEY = "AIzaSyD4pIVHYfj5J2k06ttSWlnWKT5MPF1qPnE"; // Leave empty, handled by the environment
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+        async function callGeminiAPI(prompt) {
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    return candidate.content.parts[0].text;
+                } else {
+                    return "Sorry, I couldn't generate a response. Please try again.";
+                }
+            } catch (error) {
+                console.error("Gemini API call failed:", error);
+                return "An error occurred while contacting the AI. Please check the console for details.";
+            }
+        }
+
+
+        // Page Loader
+        const loader = document.getElementById('page-loader');
+        const header = document.querySelector('header');
+        const main = document.querySelector('main');
+        const footer = document.querySelector('footer');
+
+        window.addEventListener('load', () => {
+            // Use a timeout to ensure the loader is visible for a minimum duration
+            setTimeout(() => {
+                loader.classList.add('opacity-0');
+                header.classList.remove('opacity-0');
+                main.classList.remove('opacity-0');
+                footer.classList.remove('opacity-0');
+                
+                // Remove loader from DOM after transition
+                setTimeout(() => loader.style.display = 'none', 700);
+            }, 1500); // Minimum 1.5 seconds loading time
+        });
+
+        // Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Countdown Timer
+        const countdownDate = new Date("October 6, 2025 23:59:59").getTime();
+
+        const countdownFunction = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            if(document.getElementById("days")) {
+                document.getElementById("days").innerText = String(days).padStart(2, '0');
+                document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+            }
+
+
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                const countdownDiv = document.getElementById("countdown");
+                if(countdownDiv) {
+                   countdownDiv.innerHTML = "<h3 class='text-2xl font-bold registration-closed-effect'>Registration Closed</h3><p class='text-gray-600 mt-2'>Stay tuned for our next batch!</p>";
+                   countdownDiv.classList.add('border-red-300', 'bg-red-50');
+                }
+            }
+        }, 1000);
+
+        // Scroll Animations
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            revealElements.forEach(el => {
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    el.classList.add('active');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Trigger on load
+
+
+        // Google Sheet Form Submission
+        const form = document.getElementById('registrationForm');
+        const formMessage = document.getElementById('formMessage');
+        const submitButton = document.getElementById('submitButton');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            
+            // IMPORTANT: Replace this URL with your own Google Apps Script Web App URL
+            const scriptURL = ' https://script.google.com/macros/s/AKfycbwU2PD7-cMoprqyOCLDBhdL2LIvkg1G6T_RSZ2NjwyqTPx8FNxHXvDRwu2jIp1TlCUH/exec'; // <-- REPLACE THIS
+            
+            submitButton.disabled = true;
+            submitButton.querySelector('span').textContent = 'Submitting...';
+            formMessage.innerHTML = ''; // Clear previous messages
+            
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    console.log('Success!', response);
+                    
+                    // --- TRIGGER SUCCESS ANIMATION ---
+                    submitButton.classList.add('is-animating');
+
+                    // Play sound effect with Tone.js
+                    if (window.Tone) {
+                        const synth = new Tone.Synth({
+                            oscillator: { type: 'sine' },
+                            envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 },
+                        }).toDestination();
+                        synth.triggerAttackRelease("C6", "8n", Tone.now());
+                    }
+
+                    // Create sparkles
+                    const sparkleContainer = document.createElement('div');
+                    sparkleContainer.classList.add('absolute', 'inset-0');
+                    submitButton.appendChild(sparkleContainer);
+
+                    for (let i = 0; i < 25; i++) {
+                        const sparkle = document.createElement('div');
+                        sparkle.classList.add('sparkle');
+                        sparkle.style.left = `${Math.random() * 100}%`;
+                        sparkle.style.animationDelay = `${Math.random() * 0.5}s`;
+                        
+                        const size = Math.random() * 4 + 2; // size between 2px and 6px
+                        sparkle.style.width = `${size}px`;
+                        sparkle.style.height = `${size}px`;
+                        sparkle.style.background = ['#FFD700', '#FFCC33', '#E0C200'][Math.floor(Math.random() * 3)];
+                        
+                        sparkleContainer.appendChild(sparkle);
+                    }
+                    
+                    setTimeout(() => {
+                        submitButton.classList.remove('is-animating');
+                        if(sparkleContainer) sparkleContainer.remove();
+                        
+                        form.reset();
+                        formMessage.innerHTML = '<p class="text-green-600 font-semibold">⛏️ Great! You’ve joined Dnyasa’s mentorship. Check your email for details.</p>';
+                        submitButton.disabled = false;
+                        submitButton.querySelector('span').textContent = 'Submit & Join Now';
+                    }, 1800); // Wait for animation to finish
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    formMessage.innerHTML = '<p class="text-red-600 font-semibold">Oops! Something went wrong. Please try again.</p>';
+                    submitButton.disabled = false;
+                    submitButton.querySelector('span').textContent = 'Submit & Join Now';
+                });
+        });
+
+        // --- STUDY PLAN GENERATOR ---
+        const generatePlanBtn = document.getElementById('generate-plan-btn');
+        const studyPlanModal = document.getElementById('study-plan-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalContent = document.getElementById('modal-content');
+
+        generatePlanBtn.addEventListener('click', async () => {
+            const selectedPlan = document.getElementById('plan').value;
+            studyPlanModal.classList.remove('hidden');
+            modalContent.innerHTML = '<p class="text-center">✨ Generating your personalized plan with Gemini... this may take a moment.</p>';
+
+            const prompt = `Act as an expert geology mentor named Apoorva. A prospective student has selected the "${selectedPlan}" mentorship plan. Create a concise, encouraging, and well-structured 2-month (8-week) study plan for them. The plan should be a high-level overview, focusing on weekly themes and activities. Tailor the plan to the features of the "${selectedPlan}" package. For example, the Diamond plan includes a resume review and a mega test series, so mention when those would happen. Format the output clearly using weeks and bullet points. Start with a friendly and encouraging opening.`;
+
+            const planText = await callGeminiAPI(prompt);
+            modalContent.innerHTML = `<pre class="modal-content text-gray-700 leading-relaxed">${planText}</pre>`;
+        });
+
+        closeModalBtn.addEventListener('click', () => studyPlanModal.classList.add('hidden'));
+        studyPlanModal.addEventListener('click', (e) => {
+            if (e.target === studyPlanModal) {
+                studyPlanModal.classList.add('hidden');
+            }
+        });
+
+        // --- CHATBOT LOGIC ---
+        const chatWidget = document.getElementById('chat-widget');
+        const chatWindow = document.getElementById('chat-window');
+        const closeChatBtn = document.getElementById('close-chat-btn');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const quickRepliesContainer = document.getElementById('quick-replies');
+        const geminiChatBtn = document.getElementById('gemini-chat-btn');
+        let initialGreetingSent = false;
+
+        const knowledgeBase = {
+            'default': "I'm not sure I can answer that. Try asking about our programs, the mentor, batch schedule, or how to register. For deeper geology questions, use the ✨ button!",
+            'greeting': "Hi 👋 I’m DnyaBot! I can help you learn about G-Dnyasa’s mentorship, plans, and upcoming batches. What would you like to know?",
+            'g-dnyasa': "✨ G-Dnyasa is an online geology mentorship program that helps UG/PG students prepare for CSIR-NET, GATE, IIT JAM, and university exams.",
+            'mentor': "🧑‍🏫 The mentor is Ms. Apoorva Pimprikar (MSc Applied Geology, GATE GG 2024 & 2025). She is passionate about making complex geological concepts accessible and enjoyable.",
+            'plans': "💎 We offer three plans: Quartz (Basic), Garnet (Silver), and Diamond (Gold). Each offers live sessions, mock tests, and study materials, with higher tiers providing more sessions and extra features like resume reviews.",
+            'batch': "🕒 The next batch starts on October 8, 2025. Classes are held online every Wednesday & Thursday, from 7 PM to 9 PM.",
+            'register': "📋 You can register by scrolling to the registration form on this page and filling it out. Your response will be saved automatically!",
+            'materials': "📚 You can find free notes, revision tips, and links to helpful videos in the ‘Free Resources & Tips’ section on our website."
+        };
+
+        const addMessage = (sender, message, isGemini = false) => {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('p-3', 'rounded-2xl', 'max-w-[85%]', 'w-fit', 'text-sm', 'transition-opacity', 'duration-300');
+            if (sender === 'bot') {
+                messageElement.classList.add('bg-stone-200', 'text-gray-800', 'self-start');
+                 if (isGemini) {
+                    messageElement.innerHTML = `✨ ${message.replace(/\n/g, '<br>')}`;
+                } else {
+                    messageElement.innerHTML = message.replace(/\n/g, '<br>');
+                }
+            } else {
+                messageElement.classList.add('bg-green-700', 'text-white', 'self-end');
+                messageElement.textContent = message;
+            }
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+        
+        const getBotResponse = (userInput) => {
+            const input = userInput.toLowerCase();
+            if (input.includes('plan') || input.includes('quartz') || input.includes('garnet') || input.includes('diamond') || input.includes('program')) return knowledgeBase.plans;
+            if (input.includes('mentor') || input.includes('teacher') || input.includes('apoorva')) return knowledgeBase.mentor;
+            if (input.includes('batch') || input.includes('schedule') || input.includes('time') || input.includes('start')) return knowledgeBase.batch;
+            if (input.includes('register') || input.includes('join') || input.includes('enroll')) return knowledgeBase.register;
+            if (input.includes('material') || input.includes('notes') || input.includes('resource')) return knowledgeBase.materials;
+            if (input.includes('g-dnyasa') || input.includes('what is')) return knowledgeBase['g-dnyasa'];
+            if (input.includes('hello') || input.includes('hi')) return knowledgeBase.greeting;
+            return knowledgeBase.default;
+        };
+
+        const handleUserInput = (input, useGemini = false) => {
+            if(!input.trim()) return;
+            addMessage('user', input);
+            const userQuestion = chatInput.value;
+            chatInput.value = '';
+            
+            if(useGemini) {
+                setTimeout(() => {
+                    addMessage('bot', "Thinking... ✨");
+                }, 200);
+                
+                const prompt = `You are DnyaBot, a friendly and knowledgeable geology tutor AI for the G-Dnyasa Mentorship website. A student has asked the following question: "${userQuestion}". Provide a clear, concise, and helpful answer suitable for an undergraduate geology student.`;
+                
+                callGeminiAPI(prompt).then(response => {
+                    // Remove "Thinking..." message
+                    chatMessages.removeChild(chatMessages.lastChild);
+                    addMessage('bot', response, true);
+                });
+
+            } else {
+                 setTimeout(() => {
+                    const botResponse = getBotResponse(input);
+                    addMessage('bot', botResponse);
+                }, 500);
+            }
+        };
+        
+        chatWidget.addEventListener('click', () => {
+            chatWindow.classList.toggle('hidden');
+            if (!chatWindow.classList.contains('hidden') && !initialGreetingSent) {
+                addMessage('bot', knowledgeBase.greeting);
+                initialGreetingSent = true;
+            }
+        });
+        
+        closeChatBtn.addEventListener('click', () => chatWindow.classList.add('hidden'));
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleUserInput(chatInput.value);
+        });
+
+        geminiChatBtn.addEventListener('click', () => {
+             handleUserInput(chatInput.value, true);
+        });
+
+        quickRepliesContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('quick-reply-btn')) {
+                const quickReplyText = e.target.textContent;
+                addMessage('user', quickReplyText);
+                 setTimeout(() => {
+                    const botResponse = getBotResponse(quickReplyText);
+                    addMessage('bot', botResponse);
+                }, 500);
+            }
+        });
+
+        // Add styles for quick reply buttons
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .quick-reply-btn {
+                background-color: #f5f5f4; /* stone-100 */
+                border: 1px solid #e7e5e4; /* stone-200 */
+                color: #5D4037; /* earth-brown */
+                padding: 6px 12px;
+                border-radius: 9999px;
+                font-size: 0.8rem;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
+            .quick-reply-btn:hover {
+                background-color: #e7e5e4; /* stone-200 */
+            }
+        `;
+        document.head.appendChild(style);
+
+
+        /*
+        HOW TO CONNECT THE FORM TO GOOGLE SHEETS:
+        1. Create a new Google Sheet.
+        2. Go to Extensions > Apps Script.
+        3. Paste the following code into the script editor, replacing the existing content:
+
+        function doPost(e) {
+          var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+          var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+          var newRow = headers.map(function(header) {
+            return header === 'Timestamp' ? new Date() : e.parameter[header];
+          });
+          sheet.appendRow(newRow);
+          return ContentService.createTextOutput(JSON.stringify({ 'result': 'success' })).setMimeType(ContentService.MimeType.JSON);
+        }
+
+        4. Save the script project (give it a name like "Website Form Handler").
+        5. Click "Deploy" > "New deployment".
+        6. For "Select type", choose "Web app".
+        7. In the configuration:
+           - Enter a description.
+           - For "Execute as", select "Me".
+           - For "Who has access", select "Anyone".
+        8. Click "Deploy".
+        9. Authorize the script when prompted.
+        10. Copy the "Web app URL" provided.
+        11. Paste that URL into the `scriptURL` constant in the JavaScript code above.
+        12. Make sure the first row of your Google Sheet has headers that EXACTLY match the `name` attributes of your form inputs (e.g., Name, Email, Phone, College, Plan). Add a 'Timestamp' header as well if you used the script above.
+        */
+    </script>
+</body>
+</html>
+
