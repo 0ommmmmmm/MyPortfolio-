@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Om</title>
+    <title>Om's Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +11,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Faded Multicolor Accent Theme */
+        /* Faded Multicolor Accent Theme
+        */
         :root {
             --macos-blue: #007AFF;
             --card-background: rgba(255, 255, 255, 0.65); /* Made cards more transparent */
@@ -27,44 +28,6 @@
             background-color: #f0f4f8; /* Fallback background */
         }
         
-        /* --- Preloader Styles --- */
-        #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 99999;
-            background-color: #f0f4f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 5s ease, visibility 5s ease;
-        }
-
-        #preloader.preloader-hidden {
-            opacity: 10;
-            visibility: hidden;
-        }
-
-        .preloader-content {
-            text-align: center;
-        }
-
-        .preloader-text {
-            font-size: 2rem; /* 32px */
-            font-weight: 700;
-            color: var(--text-primary);
-            opacity: 0;
-            animation: fadeInText 1s ease 0.5s forwards;
-            margin-bottom: 1.5rem;
-        }
-
-        @keyframes fadeInText {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         #live-background {
             position: fixed;
             top: 0;
@@ -81,6 +44,7 @@
             border: 1px solid var(--border-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 1rem; /* Added rounded corners */
         }
 
         .card:hover {
@@ -115,6 +79,7 @@
             overflow: hidden;
             transition: all 0.3s ease;
             z-index: 1;
+            border-radius: 9999px; /* Ensure buttons are rounded */
         }
 
         .btn-animated::before {
@@ -132,7 +97,7 @@
         }
         
         .btn-animated.primary::before {
-             background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .btn-animated:hover::before {
@@ -194,6 +159,9 @@
             white-space: pre-wrap;
             background: rgba(0,0,0,0.03);
             border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 0.5rem; /* Added rounded corners */
+            text-align: left; /* Align text left for better readability */
+            padding: 1rem; /* Added padding */
         }
         
         .loader {
@@ -303,31 +271,55 @@
             border: none;
         }
 
+        /* Ensure all cards have rounded corners */
+        .rounded-lg { border-radius: 1rem; }
+        .rounded-2xl { border-radius: 1.5rem; }
+        .rounded-full { border-radius: 9999px; }
+
+        /* Blinking Cursor Animation for Loader */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .blinking-cursor {
+            animation: blink 1s step-end infinite;
+        }
+
     </style>
 </head>
-<body>
-    <div id="preloader">
-        <div class="preloader-content">
-            <h1 class="preloader-text">Welcome to Om's Portfolio</h1>
-            <div class="loader"></div>
+<body class="bg-gray-50">
+    <!-- Website Loader -->
+    <div id="loader-wrapper" class="fixed inset-0 z-[99999] flex items-center justify-center bg-gray-50/80 backdrop-blur-md transition-opacity duration-500 ease-out font-mono">
+        <div class="text-center">
+            <div class="text-6xl font-bold text-[var(--text-primary)]">
+                <span id="loader-percentage">1</span>%<span class="blinking-cursor">_</span>
+            </div>
+            <div id="loader-status" class="text-lg text-[var(--text-secondary)] mt-4 transition-opacity duration-300 ease-in-out">
+                Initializing...
+            </div>
         </div>
     </div>
 
     <canvas id="live-background"></canvas>
     <div id="cursor-orb"></div>
 
+    <!-- Header Section -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
         <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl sm:text-2xl font-bold text-[var(--text-primary)] name-slide-in">Om N. Bhogan</a>
+            <a href="#" class="text-xl sm:text-2xl font-bold text-[var(--text-primary)] name-slide-in">0ommmmmmm</a>
+            
+            <!-- Desktop Navigation -->
             <nav class="hidden md:flex space-x-2">
                 <a href="#about" class="nav-link text-gray-600">About</a>
                 <a href="#skills" class="nav-link text-gray-600">Skills</a>
                 <a href="#projects" class="nav-link text-gray-600">Projects</a>
                 <a href="#certificates" class="nav-link text-gray-600">Certificates</a>
-                <a href="#memories" class="nav-link text-gray-600">Memories</a>
+                <a href="#memories" class="nav-link text-gray-6   00">Memories</a>
                 <a href="#ai-coach" class="nav-link text-gray-600">AI Coach</a>
                 <a href="#contact" class="nav-link text-gray-600">Contact</a>
             </nav>
+            
+            <!-- Mobile Menu Button -->
             <button id="mobile-menu-btn" class="md:hidden text-[var(--text-primary)] focus:outline-none z-50">
                 <div class="hamburger-icon">
                     <span></span>
@@ -336,6 +328,8 @@
                 </div>
             </button>
         </div>
+        
+        <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden bg-white/90 backdrop-blur-md">
              <a href="#about" class="nav-link block py-3 px-6 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">About</a>
             <a href="#skills" class="nav-link block py-3 px-6 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">Skills</a>
@@ -349,6 +343,7 @@
 
     <main class="container mx-auto px-4 sm:px-6 pt-24 relative z-10">
 
+        <!-- Home Section -->
         <section id="home" class="min-h-screen flex items-center reveal-up">
             <div class="text-center md:text-left w-full">
                 <h1 class="text-4xl sm:text-5xl md:text-7xl font-black text-[var(--text-primary)] leading-tight">
@@ -360,12 +355,13 @@
                     An aspiring Computer Science&Eng. Student with a passion for building intelligent systems and solving complex problems through data-driven insights.
                 </p>
                 <div class="mt-10 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
-                    <a href="#projects" class="btn-animated primary w-full sm:w-auto bg-[var(--macos-blue)] text-white font-bold py-3 px-8 rounded-full text-center">View My Work</a>
-                    <a href="#contact" class="btn-animated w-full sm:w-auto bg-white/90 hover:bg-white text-gray-800 font-bold py-3 px-8 rounded-full text-center">Get In Touch</a>
+                    <a href="#projects" class="btn-animated primary w-full sm:w-auto bg-[var(--macos-blue)] text-white font-bold py-3 px-8 text-center">View My Work</a>
+                    <a href="#contact" class="btn-animated w-full sm:w-auto bg-white/90 hover:bg-white text-gray-800 font-bold py-3 px-8 text-center border border-gray-200">Get In Touch</a>
                 </div>
             </div>
         </section>
 
+        <!-- About Section -->
         <section id="about" class="py-20">
             <div class="card max-w-5xl mx-auto p-6 sm:p-10 rounded-2xl">
                 <h2 class="section-title text-3xl sm:text-4xl font-bold text-center mb-12 reveal-up">About Me</h2>
@@ -382,6 +378,7 @@
         </section>
         
         <div class="py-20 space-y-20">
+            <!-- Skills Section -->
             <section id="skills" class="reveal-up">
                 <h2 class="section-title text-3xl sm:text-4xl font-bold text-center mb-12">Core Competencies</h2>
                 <div class="card max-w-5xl mx-auto p-6 sm:p-10 rounded-2xl">
@@ -397,6 +394,7 @@
                 </div>
             </section>
 
+            <!-- Projects Section -->
             <section id="projects" class="reveal-up">
                 <h2 class="section-title text-3xl sm:text-4xl font-bold text-center mb-12">Projects</h2>
                 <div id="projects-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -428,11 +426,15 @@
                 </div>
             </section>
 
+            <!-- Certificates Section -->
             <section id="certificates" class="reveal-up">
                 <h2 class="section-title text-3xl sm:text-4xl font-bold text-center mb-12">Certificates & Achievements</h2>
                 <div class="relative max-w-4xl mx-auto">
+                    <!-- Timeline line -->
                     <div class="absolute left-4 md:left-1/2 top-2 bottom-2 w-0.5 bg-gray-300 -translate-x-1/2"></div>
+                    
                     <div class="space-y-12">
+                        <!-- AI Certificate (right side)-->
                         <div class="relative pl-12 md:pl-0">
                             <div class="md:grid md:grid-cols-2 md:gap-8">
                                 <div class="md:text-right"></div>
@@ -446,8 +448,11 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="absolute top-2 right-4 w-4 h-4 rounded-full bg-[var(--macos-blue)] -translate-x-1/2 border-4 border-white/80"></div>
+                            <!-- Timeline dot -->
+                            <div class="absolute top-2 left-4 md:left-1/2 w-4 h-4 rounded-full bg-[var(--macos-blue)] -translate-x-1/2 border-4 border-white/80"></div>
                         </div>
+                        
+                        <!-- Data Science Certificate (left side) -->
                         <div class="relative pl-12 md:pl-0">
                             <div class="md:grid md:grid-cols-2 md:gap-8">
                                 <div class="md:order-2"></div>
@@ -461,9 +466,12 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="absolute top-2 left-4 w-4 h-4 rounded-full bg-[var(--macos-blue)] -translate-x-1/2 border-4 border-white/80"></div>
+                            <!-- Timeline dot -->
+                            <div class="absolute top-2 left-4 md:left-1/2 w-4 h-4 rounded-full bg-[var(--macos-blue)] -translate-x-1/2 border-4 border-white/80"></div>
                         </div>
-                        <div class="relative pl-12 md:pl-0">
+                        
+                        <!-- IBM Certificate (right side) -->
+                         <div class="relative pl-12 md:pl-0">
                             <div class="md:grid md:grid-cols-2 md:gap-8">
                                 <div class="md:text-right"></div>
                                 <div>
@@ -476,10 +484,12 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="absolute top-2 right-4 w-4 h-4 rounded-full bg-[var(--macos-blue)] -translate-x-1/2 border-4 border-white/80"></div>
+                            <!-- Timeline dot -->
+                            <div class="absolute top-2 left-4 md:left-1/2 w-4 h-4 rounded-full bg-[var(--macos-blue)] -translate-x-1/2 border-4 border-white/80"></div>
                         </div>
                         
-                        <div class="relative pl-12 md:pl-0">
+                        <!-- Deloitte Company (left side) -->
+                         <div class="relative pl-12 md:pl-0">
                             <div class="md:grid md:grid-cols-2 md:gap-8">
                                 <div class="md:order-2"></div>
                                 <div class="md:order-1 md:text-right">
@@ -492,8 +502,11 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="absolute top-2 left-4 w-4 h-4 rounded-full bg-[var(--macos-blue)] -translate-x-1/2 border-4 border-white/80"></div>
+                            <!-- Timeline dot -->
+                            <div class="absolute top-2 left-4 md:left-1/2 w-4 h-4 rounded-full bg-[var(--macos-blue)] -translate-x-1/2 border-4 border-white/80"></div>
                         </div>
+                        
+                        <!-- Leadership Certificate (right side) -->
                         <div class="relative pl-12 md:pl-0">
                             <div class="md:grid md:grid-cols-2 md:gap-8">
                                 <div class="md:text-right"></div>
@@ -507,15 +520,19 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="absolute top-2 right-4 w-4 h-4 rounded-full bg-[var(--macos-blue)] -translate-x-1/2 border-4 border-white/80"></div>
+                            <!-- Timeline dot -->
+                            <div class="absolute top-2 left-4 md:left-1/2 w-4 h-4 rounded-full bg-[var(--macos-blue)] -translate-x-1/2 border-4 border-white/80"></div>
                         </div>
                     </div>
                 </div>
             </section>
+            
+            <!-- Memories Section -->
             <section id="memories" class="reveal-up">
                 <h2 class="section-title text-3xl sm:text-4xl font-bold text-center mb-12">Memories</h2>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <a href="https://0ommmmmmm.tech/schoolp" class="block card rounded-lg overflow-hidden group">
+                    <!-- Album 1 -->
+                    <a href="https://0ommmmmmm.tech/schoolp" target="_blank" class="block card rounded-lg overflow-hidden group">
                         <div class="relative">
                             <img src="https://i.postimg.cc/prrKJdBZ/Screenshot-20240804-130933-Photos.jpg" alt="School Bells & Smiles" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105">
                             <div class="absolute inset-0 bg-black/20"></div>
@@ -525,7 +542,8 @@
                             </div>
                         </div>
                     </a>
-                    <a href="https://0ommmmmmm.tech/boardingp" class="block card rounded-lg overflow-hidden group">
+                    <!-- Album 2 -->
+                    <a href="https://0ommmmmmm.tech/boardingp" target="_blank" class="block card rounded-lg overflow-hidden group">
                         <div class="relative">
                             <img src="https://i.postimg.cc/R04bmcRb/20250612-115925.jpg" alt="Boarding School Life" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105">
                              <div class="absolute inset-0 bg-black/20"></div>
@@ -535,44 +553,50 @@
                             </div>
                         </div>
                     </a>
-                    <a href="https://0ommmmmmm.tech/Private" class="block card rounded-lg overflow-hidden group">
+                    <!-- Album 3 -->
+                    <a href="https://0ommmmmmm.tech/Private" target="_blank" class="block card rounded-lg overflow-hidden group">
                         <div class="relative">
-                            <img src="https://i.postimg.cc/XNxQZ4BH/5.jpg" alt="Private" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105">
+                            <img src="https://i.postimg.cc/44D5HNTF/Screenshot-2025-08-27-at-11-34-47-PM.png" alt="Private" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105">
                              <div class="absolute inset-0 bg-black/20"></div>
                             <div class="absolute bottom-0 left-0 p-4">
-                                <h3 class="text-white text-2xl font-bold">Private (It's under construction) </h3>
-                                <p class="text-white/80 text-sm">A quiet gallery of smiles, tears, and stories untold.</p>
+                                <h3 class="text-white text-2xl font-bold">Ganesh chaturthi(2025)</h3>
+                                <p class="text-white/80 text-sm">A glimpse of our Ganesh Chaturthi celebrations – joy, faith & devotion.</p>
                             </div>
                         </div>
                     </a>
                 </div>
             </section>
 
+            <!-- AI Coach Section -->
             <section id="ai-coach" class="reveal-up">
                 <h2 class="section-title text-3xl sm:text-4xl font-bold text-center mb-12">✨ AI Career Coach</h2>
                 <div class="card max-w-4xl mx-auto p-6 sm:p-8 rounded-lg">
-                    <p class="font-semibold text-lg text-center text-[var(--text-secondary)] mb-6">Integrated with Gemini API. Ask the AI for insights based on my profile.</p>
+                    <p class="font-semibold text-lg text-center text-[var(--text-secondary)] mb-6">Integrated with the Gemini API. Ask the AI for insights based on my profile.</p>
                     <div class="flex flex-wrap gap-2 sm:gap-4 justify-center">
-                        <button class="ai-prompt-btn btn-animated bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full text-sm" data-prompt="Suggest a new, challenging project idea that combines Python with a real-world problem, suitable for an aspiring AI/ML engineer.">Suggest a project idea</button>
-                        <button class="ai-prompt-btn btn-animated bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full text-sm" data-prompt="Generate a technical interview question that would test my problem-solving skills.">Create an interview question</button>
-                        <button class="ai-prompt-btn btn-animated bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full text-sm" data-prompt="Based on my skills and projects, what is a potential career path I could follow in the next 5 years?">Suggest a career path</button>
+                        <button class="ai-prompt-btn btn-animated bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 text-sm" data-prompt="Suggest a new, challenging project idea that combines Python with a real-world problem, suitable for an aspiring AI/ML engineer.">Suggest a project idea</button>
+                        <button class="ai-prompt-btn btn-animated bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 text-sm" data-prompt="Generate a technical interview question that would test my problem-solving skills.">Create an interview question</button>
+                        <button class="ai-prompt-btn btn-animated bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 text-sm" data-prompt="Based on my skills and projects, what is a potential career path I could follow in the next 5 years?">Suggest a career path</button>
                     </div>
-                    <div id="ai-coach-result" class="p-4 rounded-lg mt-6 transition-all duration-300 flex items-center justify-center text-center text-[var(--text-secondary)]">
-                        Select a prompt to see the AI in action!
+                    <!-- AI Result Box -->
+                    <div id="ai-coach-result-container" class="mt-6">
+                        <div id="ai-coach-result" class="transition-all duration-300 flex items-center justify-center text-center text-[var(--text-secondary)]">
+                            Select a prompt to see the AI in action!
+                        </div>
+                        <div id="ai-coach-loader" class="hidden mx-auto loader mt-6"></div>
                     </div>
-                    <div id="ai-coach-loader" class="hidden mx-auto loader"></div>
                 </div>
             </section>
 
+            <!-- Contact Section -->
             <section id="contact" class="reveal-up">
                  <h2 class="section-title text-3xl sm:text-4xl font-bold text-center mb-12">Let's Connect</h2>
                 <div class="card max-w-4xl mx-auto p-6 sm:p-8 rounded-lg">
                     <p class="text-center text-[var(--text-secondary)] mb-8 max-w-2xl mx-auto">I'm currently seeking new opportunities and collaborations. Feel free to reach out!</p>
                     <div class="grid md:grid-cols-2 gap-8">
                         <div class="space-y-6">
-                            <div class="flex items-center space-x-4"><div class="bg-blue-100 p-3 rounded-full flex-shrink-0"><i class="fas fa-envelope text-xl text-[var(--macos-blue)]"></i></div><div><h4 class="font-semibold">Email</h4><a href="mailto:ombhogan14545454n@gmail.com" class="text-[var(--macos-blue)] hover:underline break-all">ombhogan14545454n@gmail.com</a></div></div>
-                            <div class="flex items-center space-x-4"><div class="bg-blue-100 p-3 rounded-full flex-shrink-0"><i class="fas fa-phone text-xl text-[var(--macos-blue)]"></i></div><div><h4 class="font-semibold">Phone</h4><a href="tel:+919699865833" class="text-[var(--macos-blue)] hover:underline">+91 96998 65833</a></div></div>
-                            <div class="flex items-center space-x-4"><div class="bg-blue-100 p-3 rounded-full flex-shrink-0"><i class="fas fa-map-marker-alt text-xl text-[var(--macos-blue)]"></i></div><div><h4 class="font-semibold">Address</h4><p class="text-[var(--text-primary)]">Sirvoi, Pimplamol, Goa - 403705</p></div></div>
+                            <div class="flex items-center space-x-4"><div class="bg-blue-100 p-3 rounded-full flex-shrink-0 w-12 h-12 flex items-center justify-center"><i class="fas fa-envelope text-xl text-[var(--macos-blue)]"></i></div><div><h4 class="font-semibold">Email</h4><a href="mailto:ombhogan14545454n@gmail.com" class="text-[var(--macos-blue)] hover:underline break-all">ombhogan14545454n@gmail.com</a></div></div>
+                            <div class="flex items-center space-x-4"><div class="bg-blue-100 p-3 rounded-full flex-shrink-0 w-12 h-12 flex items-center justify-center"><i class="fas fa-phone text-xl text-[var(--macos-blue)]"></i></div><div><h4 class="font-semibold">Phone</h4><a href="tel:+919699865833" class="text-[var(--macos-blue)] hover:underline">+91 96998 65833</a></div></div>
+                            <div class="flex items-center space-x-4"><div class="bg-blue-100 p-3 rounded-full flex-shrink-0 w-12 h-12 flex items-center justify-center"><i class="fas fa-map-marker-alt text-xl text-[var(--macos-blue)]"></i></div><div><h4 class="font-semibold">Address</h4><p class="text-[var(--text-primary)]">Sirvoi, Pimplamol, Goa - 403705</p></div></div>
                         </div>
                         <div class="flex flex-col justify-center items-center space-y-4 border-t md:border-t-0 md:border-l border-black/10 pt-6 md:pt-0 md:pl-8">
                              <p class="text-lg font-semibold">Find me on</p>
@@ -593,18 +617,103 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- Preloader ---
-            const preloader = document.getElementById('preloader');
-            window.addEventListener('load', () => {
-                // Ensure preloader is visible for a minimum time
-                setTimeout(() => {
-                    if (preloader) {
-                        preloader.classList.add('preloader-hidden');
-                    }
-                }, 500); // 0.5 second delay
-            });
+        // --- Website Loader ---
+        // This script is at the end of <body>, so elements are available.
+        // We run this part *before* the DOMContentLoaded listener.
+        const loaderWrapper = document.getElementById('loader-wrapper');
+        const loaderPercentage = document.getElementById('loader-percentage');
+        const loaderStatus = document.getElementById('loader-status'); // New element
+        let percentage = 1; // Start from 1
+        let loaderInterval = null;
+        let statusInterval = null; // New interval
+        
+        const loaderStartTime = Date.now(); // Record the start time
+        const minLoadTime = 5000; // 5 seconds minimum load time
 
+        const statusMessages = [
+            "Initializing core...",
+            "Loading assets...",
+            "Compiling shaders...",
+            "Decrypting files...",
+            "Booting kernel...",
+            "Establishing connection...",
+            "Almost there..."
+        ];
+        let statusIndex = 0;
+
+        // Function to hide the loader
+        function hideLoader() {
+            if (loaderWrapper) {
+                // Add classes to fade it out
+                loaderWrapper.classList.add('opacity-0', 'pointer-events-none');
+                
+                // Remove from DOM after transition
+                setTimeout(() => {
+                    if (loaderWrapper.parentNode) {
+                        loaderWrapper.parentNode.removeChild(loaderWrapper);
+                    }
+                }, 500); // Matches transition duration (500ms)
+            }
+        }
+
+        if (loaderWrapper && loaderPercentage && loaderStatus) {
+            // Percentage counter
+            loaderInterval = setInterval(() => {
+                percentage++;
+                if (percentage >= 100) { // Count to 100
+                    percentage = 100; // Stay at 100
+                    clearInterval(loaderInterval);
+                }
+                if (loaderPercentage) {
+                    loaderPercentage.textContent = percentage;
+                }
+            }, 50); // ~5s to get to 100 (50ms * 99 steps = 4950ms)
+
+            // Status message cycler
+            loaderStatus.textContent = statusMessages[statusIndex];
+            statusInterval = setInterval(() => {
+                statusIndex = (statusIndex + 1) % statusMessages.length;
+                
+                // Fade out text
+                loaderStatus.style.opacity = '0';
+                
+                setTimeout(() => {
+                    // Change text and fade in
+                    loaderStatus.textContent = statusMessages[statusIndex];
+                    loaderStatus.style.opacity = '1';
+                }, 300); // Wait for fade out to complete
+
+            }, 1500); // Change status every 1.5 seconds
+        }
+
+        // We use 'load' to wait for all resources (like images)
+        window.addEventListener('load', () => {
+            if (loaderInterval) {
+                clearInterval(loaderInterval); // Stop fake loader
+            }
+            if (statusInterval) {
+                clearInterval(statusInterval); // Stop status cycler
+            }
+            
+            if (loaderWrapper && loaderPercentage && loaderStatus) {
+                loaderPercentage.textContent = '100'; // Jump to 100
+                loaderStatus.textContent = "All systems go!"; // Final message
+                
+                const elapsedTime = Date.now() - loaderStartTime;
+                const remainingTime = minLoadTime - elapsedTime;
+
+                if (remainingTime > 0) {
+                    // If load was faster than 5s, wait the remaining time
+                    setTimeout(hideLoader, remainingTime);
+                } else {
+                    // If load took 5s or more, hide immediately
+                    hideLoader();
+                }
+            }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
             // --- Live Background Animation ---
             const canvas = document.getElementById('live-background');
             const ctx = canvas.getContext('2d');
@@ -663,6 +772,7 @@
 
             function init() {
                 const orbCount = Math.floor(width * height / 30000);
+                orbs.length = 0; // Clear existing orbs before re-populating
                 for (let i = 0; i < orbCount; i++) {
                     orbs.push(new Orb());
                 }
@@ -680,7 +790,6 @@
             window.addEventListener('resize', () => {
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
-                orbs.length = 0;
                 init();
             });
             
@@ -710,16 +819,31 @@
 
 
             // --- Smooth Scrolling & Close Mobile Menu on Click ---
-            document.querySelectorAll('a.nav-link').forEach(anchor => {
+            document.querySelectorAll('a.nav-link, a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    if (mobileMenu.classList.contains('open')) {
-                         hamburgerIcon.classList.remove('open');
-                         mobileMenu.classList.remove('open');
-                    }
-                    const targetElement = document.querySelector(this.getAttribute('href'));
-                    if(targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    // Check if the link is just a nav link
+                    const isNavLink = this.classList.contains('nav-link');
+                    const href = this.getAttribute('href');
+                    
+                    if (href && href.startsWith('#') && href.length > 1) {
+                         e.preventDefault();
+                        
+                        if (mobileMenu.classList.contains('open')) {
+                            hamburgerIcon.classList.remove('open');
+                            mobileMenu.classList.remove('open');
+                        }
+                        
+                        const targetElement = document.querySelector(href);
+                        if(targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    } else if (isNavLink && href === "#") {
+                         e.preventDefault(); // Prevent jump to top for home link
+                         window.scrollTo({ top: 0, behavior: 'smooth' });
+                         if (mobileMenu.classList.contains('open')) {
+                            hamburgerIcon.classList.remove('open');
+                            mobileMenu.classList.remove('open');
+                        }
                     }
                 });
             });
@@ -780,6 +904,42 @@
             const resultBox = document.getElementById('ai-coach-result');
             const loader = document.getElementById('ai-coach-loader');
 
+            /**
+             * Fetches data from the Gemini API with exponential backoff.
+             * @param {string} url - The API endpoint URL.
+             * @param {object} options - The fetch options (method, headers, body).
+             * @param {number} [retries=3] - Number of retries.
+             * @param {number} [delay=1000] - Initial delay in ms.
+             * @returns {Promise<object>} - The JSON response from the API.
+             */
+            async function fetchWithBackoff(url, options, retries = 3, delay = 1000) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        // Don't retry on client errors (4xx), only server errors (5xx) or rate limits (429)
+                        if (response.status >= 500 || response.status === 429) {
+                            throw new Error(`API Error: ${response.statusText}`);
+                        }
+                        // For other non-ok responses (e.g., 400 Bad Request), just return the error
+                        const errorData = await response.json();
+                        throw new Error(`API Error: ${response.statusText} - ${errorData.error?.message || 'See console'}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    if (retries > 0) {
+                        // Do not log retry attempts to the console as errors
+                        // console.log(`Retrying... attempts left: ${retries - 1}`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        // Recursively call with one less retry and doubled delay
+                        return fetchWithBackoff(url, options, retries - 1, delay * 2);
+                    } else {
+                        // After all retries, throw the last error
+                        console.error("Gemini API call failed after retries:", error);
+                        throw error;
+                    }
+                }
+            }
+
             promptButtons.forEach(button => {
                 button.addEventListener('click', async () => {
                     const userPrompt = button.dataset.prompt;
@@ -795,39 +955,38 @@
                         return `${title}: ${desc}`;
                     }).join('; ');
 
-                    const fullPrompt = `
-                        You are an expert career coach for AI/ML engineering student.
-                        answer the user's question.
-                        Be encouraging, insightful, and provide actionable advice.
-
-                        PROFILE:
-                        - Name: Hi Bro
+                    const systemPrompt = `
+                        You are an expert career coach for an AI/ML engineering student.
+                        Your tone should be encouraging, insightful, and provide actionable advice.
+                        The student's name is Om.
+                        
+                        STUDENT PROFILE:
                         - Core Skills: ${skills}
                         - Projects: ${projects}
-                        
-                        USER'S QUESTION:
-                        "${userPrompt}"
-
-                        Your response should be concise, well-formatted, and directly address the question.
                     `;
+                    
+                    const fullPrompt = `Based on the student profile, please answer the following question: "${userPrompt}"`;
 
                     try {
-                        let chatHistory = [{ role: "user", parts: [{ text: fullPrompt }] }];
-                        const payload = { contents: chatHistory };
-                        const apiKey = "AIzaSyD4pIVHYfj5J2k06ttSWlnWKT5MPF1qPnE"; // WARNING: This key is exposed client-side.
-                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                        const payload = {
+                            contents: [{ parts: [{ text: fullPrompt }] }],
+                            systemInstruction: {
+                                parts: [{ text: systemPrompt }]
+                            },
+                        };
                         
-                        const response = await fetch(apiUrl, {
+                        // NOTE: The API key is an empty string.
+                        // It will be automatically provided by the runtime environment.
+                        const apiKey = ""; 
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                        
+                        const options = {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(payload)
-                        });
+                        };
 
-                        if (!response.ok) {
-                            throw new Error(`API Error: ${response.statusText}`);
-                        }
-
-                        const result = await response.json();
+                        const result = await fetchWithBackoff(apiUrl, options);
                         
                         let text = 'Sorry, I could not generate a response. Please try again.';
                         if (result.candidates && result.candidates.length > 0 &&
@@ -839,11 +998,11 @@
                         resultBox.textContent = text.trim();
 
                     } catch (error) {
-                        console.error("Gemini API call failed:", error);
-                        resultBox.textContent = "An error occurred. Please check the console for details and try again later.";
+                        resultBox.textContent = `An error occurred: ${error.message}. Please check the console for details and try again later.`;
                     } finally {
                         loader.classList.add('hidden');
                         resultBox.classList.remove('hidden');
+                        resultBox.style.textAlign = 'left'; // Ensure text is left-aligned
                     }
                 });
             });
@@ -851,3 +1010,8 @@
     </script>
 </body>
 </html>
+
+
+
+
+
